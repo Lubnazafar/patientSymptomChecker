@@ -1,0 +1,47 @@
+<?php
+include_once('dbcon.php');
+
+$error = false;
+if(isset($_POST['submit'])){
+   $gender= (isset($_POST['gender']) ? $_POST['gender'] : null);
+    $gender = strip_tags($gender);
+    $gender = htmlspecialchars($gender);
+	
+	  if(empty($gender)){
+        $error = true;
+        $errorgender = 'Please choose gender';
+    }
+   
+   
+   $age = (isset($_POST['age']) ? $_POST['age'] : null);
+   $age = strip_tags($age);
+    $age = htmlspecialchars($age);
+	
+	  if(empty($age)){
+        $error = true;
+        $errorage = 'Please select age';
+    }
+   
+    $email = (isset($_POST['email']) ? $_POST['email'] : null);
+    $email = strip_tags($email);
+    $email = htmlspecialchars($email);
+	
+	 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $error = true;
+        $erroremail = 'Please enter a valid input email';
+    }
+   
+   
+   $sql = "INSERT INTO patient(gender, age, email) values('$gender', '$age', '$email')";
+   
+     $errormsg = 'duplicate entry';
+   $result = mysql_query($sql);
+   
+if (mysqli_query($conn, $sql)) {
+    $successMsg = ' <a href="result-v.php">Click here to go to next step</a>';
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+}
+mysqli_close($conn);
+?>
